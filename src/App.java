@@ -2,10 +2,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,13 +19,13 @@ public class App {
     private static ArrayList<MediaItem> mediaItems = new ArrayList<>();
     private static ArrayList<Customer> customers = new ArrayList<>();
     private static ArrayList<RentalTransaction> rentalTransactions = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         loadMediaItems();
         loadCustomers();
         loadRentalTransactions();       
 
-        Scanner scanner = new Scanner(System.in);
         int choice;
 
         do {
@@ -82,10 +79,10 @@ public class App {
                     System.out.println("Opção inválida. Tente novamente.");
             }
         } while (choice != 0);
+        scanner.close();
     }
 
     private static void addItem() {
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("\nEscolha o tipo de mídia:");
         System.out.println("1. Filme");
@@ -153,63 +150,61 @@ public class App {
                 for (MediaItem item : mediaItems) {
                     writer.println(item);
                 }
-                clearMediaItems();
+                clearArrayMediaItems();
                 System.out.println("Dados salvos no arquivo de mídia.");
             } catch (IOException e) {
                 System.out.println("Erro ao salvar os dados no arquivo de mídia.");
             }
         } else {
             try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-                saveMediaItemsToFile(reader);
-                clearMediaItems();
+                createCopy(reader);
+                clearArrayMediaItems();
             } catch (IOException e) {
                 System.out.println("Erro ao ler o arquivo.");
             }
         }
     }
 
-    private static void saveMediaItemsToFile(BufferedReader reader) {
+    private static void createCopy(BufferedReader reader) {
         File file = new File("copy_" + FileNameEnum.MEDIA_FILE_NAME.getFileName());
         try (PrintWriter writerCopy = new PrintWriter(new FileWriter(file.getPath()))) {
             String line;
-            // System.out.println("TESTE 1: " + reader.readLine());
             while ((line = reader.readLine()) != null) {
                 writerCopy.println(line);
             }
         } catch (IOException e) {
             System.out.println("Erro ao salvar os dados no arquivo de mídia.");
         } finally {
-            saveMediaItemsToFile(file);
+            writeCopyOnOriginal(file);
         }
     }
 
-    private static void saveMediaItemsToFile(File file) {
+    private static void writeCopyOnOriginal(File file) {
         
             try (BufferedReader readerCopy = new BufferedReader(new FileReader(file.getPath()));
                     PrintWriter writer = new PrintWriter(new FileWriter(FileNameEnum.MEDIA_FILE_NAME.getFileName()))) {
                 String line;
-                // System.out.println("TESTEEEE: " + readerCopy.readLine());
                 while ((line = readerCopy.readLine()) != null) {
                     writer.println(line);
                 }
                 for (MediaItem item : mediaItems) {
                     writer.println(item);
                 }
-                clearMediaItems();
-                file.delete();
+                clearArrayMediaItems();
                 System.out.println("Dados salvos no arquivo de mídia.");
             } catch (IOException e) {
                 System.out.println("Erro ao salvar os dados no arquivo de mídia.");
+            } finally{
+                file.delete();
             }
     }
 
-    private static void clearMediaItems() {
+    private static void clearArrayMediaItems() {
         mediaItems.clear();
         System.out.println("Array de itens de mídia limpo.");
     }
 
     private static void deleteItem() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Digite o ID do item a ser excluído: ");
         int idToDelete = scanner.nextInt();
 
