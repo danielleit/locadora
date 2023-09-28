@@ -1,6 +1,6 @@
 package models;
 
-public class MediaItem {
+public class MediaItem implements Rentable {
     
     private int id;
     private String title;
@@ -38,5 +38,10 @@ public class MediaItem {
 
     public String toString() {
         return "ID: " + id + " | Título: " + title + " | Preço(diário): R$" + price + " | Duração: " + duration + " mins | Ano de Lançamento: " + releaseYear;
+    }
+
+    @Override
+    public double calculateRentalCost(long days) {
+        return getPrice() * days;
     }
 }
