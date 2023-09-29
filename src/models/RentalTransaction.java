@@ -1,6 +1,7 @@
 package models;
 
 public class RentalTransaction {
+    private int id;
     private Customer customer;
     private MediaItem item;
     private RentalClerk clerk;
@@ -8,12 +9,17 @@ public class RentalTransaction {
     private double rentalCost;
     
 
-    public RentalTransaction(RentalClerk clerk, Customer customer, MediaItem item, long rentalDays) {
+    public RentalTransaction(int id, RentalClerk clerk, Customer customer, MediaItem item, long rentalDays) {
+        this.id = id;
         this.customer = customer;
         this.item = item;
         this.clerk = clerk;
         this.rentalDays = rentalDays;
         this.rentalCost = item.calculateRentalCost(rentalDays);
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getCustomerId() {

@@ -8,10 +8,10 @@ public abstract class Person {
     private String cpf;
     private LocalDate birthday;
 
-    public Person(int id, String name, String cpf, String birthday){
+    public Person(int id, String name, String cpf, LocalDate birthday){
         this.name = name;
         this.cpf = cpf;
-        this.birthday = LocalDate.parse(birthday);
+        this.birthday = birthday;
     }
 
     public int getId() {

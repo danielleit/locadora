@@ -1,39 +1,21 @@
 package service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import models.Customer;
-import models.MediaItem;
-import models.Movie;
-import models.RentalClerk;
-import models.RentalTransaction;
-import models.TVSeries;
 import models.enums.FileNameEnum;
 
 public class Menu {
 
-    public Scanner scanner;
-    public void FileName(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-    private ArrayList<MediaItem> mediaItems = new ArrayList<>();
-    private ArrayList<Customer> customers = new ArrayList<>();
-    private ArrayList<RentalClerk> rentalClerks = new ArrayList<>();
-    private ArrayList<RentalTransaction> rentalTransactions = new ArrayList<>();
+    Scanner scanner = new Scanner(System.in);
+    FileEdit fileEdit = new FileEdit(scanner);
 
     public void main() {
+
         int choice;
+        String transactionFileName = FileNameEnum.TRANSACTION_FILE_NAME.getFileName(); // Arquivo acessado nesse menu
+        String arrayName = "rentalTransactions"; // Array que vai ser acessado nesse menu
+        String objType = "RentalTransaction"; // Tipo do objeto que vai ser acessado nesse menu
+
         do {
             System.out.println("\nLocadora Menu:");
             System.out.println("1. Realizar Locação");
@@ -49,30 +31,29 @@ public class Menu {
             System.out.print("Escolha uma opção: ");
             choice = scanner.nextInt();
 
-            String transactionFileName = FileNameEnum.TRANSACTION_FILE_NAME.getFileName();
             switch (choice) {
                 case 1:
-                    makeRentalTransaction();
+                    fileEdit.makeRentalTransaction();
                     break;
 
                 case 2:
-                    listArray(rentalTransactions);
+                    fileEdit.listArray(arrayName);
                     break;
 
                 case 3:
-                    listItemsFromFile(transactionFileName);
+                    fileEdit.listItemsFromFile(transactionFileName);
                     break;
 
                 case 4:
-                    saveDataToFiles(transactionFileName);
+                    fileEdit.saveDataToFiles(transactionFileName, arrayName);
                     break;
 
                 case 5:
-                    deleteItem();
+                    fileEdit.deleteItem(objType);
                     break;
 
                 case 6:
-                    clearFileContents(transactionFileName);
+                    fileEdit.clearFileContents(transactionFileName);
                     break;
 
                 case 7:
@@ -82,7 +63,7 @@ public class Menu {
                     customerSession(choice, FileNameEnum.CUSTOMER_FILE_NAME.getFileName());
 
                 case 9:
-                    System.out.print("Senha:");
+                    System.out.print("Senha (Senha para teste = 123):");
                     if (scanner.nextInt() == 123) {
                         managerSession(choice, FileNameEnum.CLERKS_FILE_NAME.getFileName());
                     } else {
@@ -100,54 +81,11 @@ public class Menu {
         } while (choice != 0);
     }
 
-    private void makeRentalTransaction() {
-
-        System.out.println("Digite o ID do atendente:");
-        RentalClerk clerk = findRentalClerk(rentalClerks, scanner.nextInt());
-
-        System.out.println("Digite o ID do locador:");
-        Customer customer = findCustomer(customers, scanner.nextInt());
-
-        System.out.println("Digite o ID do produto:");
-        MediaItem mediaItem = findMediaItem(mediaItems, scanner.nextInt());
-
-        System.out.println("Digite a data de devolução:");
-        LocalDate returnDate = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-        long rentalDays = ChronoUnit.DAYS.between(LocalDate.now(), returnDate);
-
-        RentalTransaction rentalTransaction = new RentalTransaction(clerk, customer, mediaItem, rentalDays);
-        rentalTransactions.add(rentalTransaction);
-    }
-
-    private RentalClerk findRentalClerk(ArrayList<RentalClerk> rentalClerks, int idRentalClerk) {
-        for (RentalClerk rentalClerk : rentalClerks) {
-            if (rentalClerk.getId() == idRentalClerk) {
-                return rentalClerk;
-            }
-        }
-        return null;
-    }
-
-    private Customer findCustomer(ArrayList<Customer> customers, int idCustomer) {
-        for (Customer customer : customers) {
-            if (customer.getId() == idCustomer) {
-                return customer;
-            }
-        }
-        return null;
-    }
-
-    private MediaItem findMediaItem(ArrayList<MediaItem> mediaItems, int idMediaItem) {
-        for (MediaItem mediaItem : mediaItems) {
-            if (mediaItem.getId() == idMediaItem) {
-                return mediaItem;
-            }
-        }
-        return null;
-    }
-
     private void customerSession(int choice, String customerFileName) {
+
+        String arrayType = "customers"; // Array que vai ser acessado nesse menu
+        String objType = "Customer"; // Tipo do objeto que vai ser acessado nesse menu
+
         do {
             System.out.println("\nSessão Cliente:");
             System.out.println("1. Cadastrar Cliente");
@@ -162,22 +100,22 @@ public class Menu {
 
             switch (choice) {
                 case 1:
-                    addItem();
+                    fileEdit.addObjOnArray(objType);
                     break;
                 case 2:
-                    listArray(customers);
+                    fileEdit.listArray(arrayType);
                     break;
                 case 3:
-                    listItemsFromFile(customerFileName);
+                    fileEdit.listItemsFromFile(customerFileName);
                     break;
                 case 4:
-                    saveDataToFiles(customerFileName);
+                    fileEdit.saveDataToFiles(customerFileName, arrayType);
                     break;
                 case 5:
-                    deleteItem();
+                    fileEdit.deleteItem(objType);
                     break;
                 case 6:
-                    clearFileContents(customerFileName);
+                    fileEdit.clearFileContents(customerFileName);
                     break;
                 case 7:
                     main();
@@ -188,6 +126,10 @@ public class Menu {
     }
 
     private void productSession(int choice, String mediaItemFileName) {
+
+        String arrayType = "mediaItems"; // Array que vai ser acessado nesse menu
+        String objType = "MediaItem"; // Tipo do objeto que vai ser acessado nesse menu
+
         do {
             System.out.println("\nSessão Produto:");
             System.out.println("1. Cadastrar Item");
@@ -202,22 +144,22 @@ public class Menu {
 
             switch (choice) {
                 case 1:
-                    addItem();
+                    fileEdit.addObjOnArray(objType);
                     break;
                 case 2:
-                    listArray(mediaItems);
+                    fileEdit.listArray(arrayType);
                     break;
                 case 3:
-                    listItemsFromFile(mediaItemFileName);
+                    fileEdit.listItemsFromFile(mediaItemFileName);
                     break;
                 case 4:
-                    saveDataToFiles(mediaItemFileName);
+                    fileEdit.saveDataToFiles(mediaItemFileName, arrayType);
                     break;
                 case 5:
-                    deleteItem();
+                    fileEdit.deleteItem(objType);
                     break;
                 case 6:
-                    clearFileContents(mediaItemFileName);
+                    fileEdit.clearFileContents(mediaItemFileName);
                     break;
                 case 7:
                     main();
@@ -228,6 +170,10 @@ public class Menu {
     }
 
     private void managerSession(int choice, String clerksFileName) {
+
+        String arrayType = "rentalClerks"; // Array que vai ser acessado nesse menu
+        String objType = "RentalClerk"; // Tipo do objeto que vai ser acessado nesse menu
+
         do {
             System.out.println("\nSessão Gerência:");
             System.out.println("1. Cadastrar Atendente");
@@ -243,26 +189,26 @@ public class Menu {
 
             switch (choice) {
                 case 1:
-                    addItem();
+                    fileEdit.addObjOnArray(objType);
                     break;
 
                 case 2:
-                    listArray(rentalClerks);
+                    fileEdit.listArray(arrayType);
                     break;
 
                 case 3:
-                    listItemsFromFile(clerksFileName);
+                    fileEdit.listItemsFromFile(clerksFileName);
                     break;
 
                 case 4:
-                    saveDataToFiles(clerksFileName);
+                    fileEdit.saveDataToFiles(clerksFileName, arrayType);
 
                 case 5:
-                    deleteItem();
+                    fileEdit.deleteItem(objType);
                     break;
 
                 case 6:
-                    clearFileContents(clerksFileName);
+                    fileEdit.clearFileContents(clerksFileName);
                     break;
 
                 case 7:
@@ -273,179 +219,5 @@ public class Menu {
             }
 
         } while (choice != 7);
-    }
-
-    private void addItem() {
-
-        System.out.println("\nEscolha o tipo de mídia:");
-        System.out.println("1. Filme");
-        System.out.println("2. Série de TV");
-        System.out.print("Digite o número correspondente: ");
-        int itemType = scanner.nextInt();
-
-        System.out.print("Digite o ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Digite o título: ");
-        String title = scanner.nextLine();
-
-        System.out.print("Digite o preço diário. Caso seja série, valor da temporada: ");
-        double price = scanner.nextDouble();
-
-        System.out.print("Digite a duração (em minutos). Caso seja série, soma de todos eps: ");
-        int duration = scanner.nextInt();
-
-        System.out.print("Digite o ano de lançamento: ");
-        int releaseYear = scanner.nextInt();
-
-        if (itemType == 1) {
-            MediaItem movie = new Movie(id, title, price, duration, releaseYear);
-            mediaItems.add(movie);
-        } else if (itemType == 2) {
-            System.out.print("Digite o número de episódios: ");
-            int numberOfEpisodes = scanner.nextInt();
-            System.out.print("Digite o número de temporadas: ");
-            int numberOfSeasons = scanner.nextInt();
-            MediaItem tvSeries = new TVSeries(id, title, price, duration, releaseYear, numberOfEpisodes,
-                    numberOfSeasons);
-            mediaItems.add(tvSeries);
-        }
-
-        System.out.println("Item adicionado com sucesso!");
-    }
-
-    private void listArray(ArrayList<?> genericArray) {
-        for (Object obj : genericArray) {
-            if (obj instanceof MediaItem) {
-                MediaItem item = (MediaItem) obj;
-                System.out.println(item);
-            } else if (obj instanceof Customer) {
-                Customer costumer = (Customer) obj;
-                System.out.println(costumer);
-            } else if (obj instanceof RentalClerk) {
-                RentalClerk rentalClerk = (RentalClerk) obj;
-                System.out.println(rentalClerk);
-            } else if (obj instanceof RentalTransaction) {
-                RentalTransaction rentalTransaction = (RentalTransaction) obj;
-                System.out.println(rentalTransaction);
-            }
-        }
-    }
-
-    private void listItemsFromFile(String fileName) {
-        File file = new File(fileName);
-        if (!file.exists()) {
-            System.out.println("Arquivo não existe! Salve os dados no arquivo.");
-        }
-        try (BufferedReader reader = createReader(fileName)) {
-            String line;
-            System.out.println("\nLista de Itens do Arquivo:");
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo.");
-        }
-    }
-
-    private PrintWriter createWriter(String fileName) throws IOException {
-        PrintWriter writer = new PrintWriter(new FileWriter(fileName));
-        return writer;
-    }
-
-    private BufferedReader createReader(String fileName) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        return reader;
-    }
-
-    private void saveDataToFiles(String fileName) {
-        File file = new File(fileName);
-
-        if (!file.exists()) {
-            try (PrintWriter writer = createWriter(fileName);) {
-                for (MediaItem item : mediaItems) {
-                    writer.println(item);
-                }
-                clearArrayMediaItems();
-                System.out.println("Dados salvos no arquivo de mídia.");
-            } catch (IOException e) {
-                System.out.println("Erro ao salvar os dados no arquivo de mídia.");
-            }
-        } else {
-            try (BufferedReader reader = createReader(fileName)) {
-                createCopy(reader, fileName);
-                clearArrayMediaItems();
-            } catch (IOException e) {
-                System.out.println("Erro ao ler o arquivo.");
-            }
-        }
-    }
-
-    private void createCopy(BufferedReader reader, String fileName) {
-        File fileCopy = new File("copy_" + fileName);
-        try (PrintWriter writerCopy = createWriter(fileCopy.getPath())) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                writerCopy.println(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar os dados no arquivo de mídia.");
-        } finally {
-            writeCopyOnFile(fileCopy, fileName);
-        }
-    }
-
-    private void writeCopyOnFile(File fileCopy, String fileName) {
-
-        try (BufferedReader readerCopy = createReader(fileCopy.getPath());
-                PrintWriter writer = createWriter(fileName)) {
-            String line;
-            while ((line = readerCopy.readLine()) != null) {
-                writer.println(line);
-            }
-            for (MediaItem item : mediaItems) {
-                writer.println(item);
-            }
-            clearArrayMediaItems();
-            System.out.println("Dados salvos no arquivo de mídia.");
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar os dados no arquivo de mídia.");
-        } finally {
-            fileCopy.delete();
-        }
-    }
-
-    private void clearArrayMediaItems() {
-        mediaItems.clear();
-        System.out.println("Array de itens de mídia limpo.");
-    }
-
-    private void deleteItem() {
-        System.out.print("Digite o ID do item a ser excluído: ");
-        int idToDelete = scanner.nextInt();
-
-        boolean found = false;
-        for (int i = 0; i < mediaItems.size(); i++) {
-            if (mediaItems.get(i).getId() == idToDelete) {
-                mediaItems.remove(i);
-                found = true;
-                System.out.println("Item excluído com sucesso.");
-                break;
-            }
-        }
-
-        if (!found) {
-            System.out.println("Item não encontrado.");
-        }
-    }
-
-    private void clearFileContents(String fileName) {
-        try (PrintWriter writer = new PrintWriter(fileName)) {
-            writer.print("");
-            System.out.println("Conteúdo do arquivo limpo com sucesso.");
-        } catch (IOException e) {
-            System.out.println("Erro ao limpar o arquivo.");
-        }
     }
 }
