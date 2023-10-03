@@ -1,2 +1,2 @@
 ID: 1 | Título: 1 | Preço(diário): R$1.0 | Duração: 1 mins | Ano de Lançamento: 1
-ID: 2 | Título: 2 | Preço por Episódio (diário): R$2.0 | Duração Total: 2 mins | Ano de Lançamento: 2 | Temporadas: 2 | Episódios: 2
+ID: 1 | Título: 1 | Preço(diário): R$1.0 | Duração: 1 mins | Ano de Lançamento: 1

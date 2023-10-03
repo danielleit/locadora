@@ -12,27 +12,60 @@ public class Menu {
     public void main() {
 
         int choice;
-        String transactionFileName = FileNameEnum.TRANSACTION_FILE_NAME.getFileName(); // Arquivo acessado nesse menu
-        String arrayName = "rentalTransactions"; // Array que vai ser acessado nesse menu
-        String objType = "RentalTransaction"; // Tipo do objeto que vai ser acessado nesse menu
 
         do {
             System.out.println("\nLocadora Menu:");
-            System.out.println("1. Realizar Locação");
-            System.out.println("2. Listar Locações");
-            System.out.println("3. Listar Locações (Arquivo Físico)");
-            System.out.println("4. Persistir Dados (Salvar no Arquivo e Limpar Array)");
-            System.out.println("5. Excluir Locação (Ainda não salva no arquivo)");
-            System.out.println("6. Limpar arquivo físico");
-            System.out.println("7. Cadastrar/Listar Produtos");
-            System.out.println("8. Cadastrar/Listar Clientes");
-            System.out.println("9. Sessão Gerência");
+            System.out.println("1. Realizar/Listar Locações");
+            System.out.println("2. Cadastrar/Listar Produtos");
+            System.out.println("3. Cadastrar/Listar Clientes");
+            System.out.println("4. Cadastrar/Listar Atendentes");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             choice = scanner.nextInt();
 
             switch (choice) {
                 case 1:
+                    rentalTransactionSession(choice, FileNameEnum.TRANSACTION_FILE_NAME.getFileName());
+
+                case 2:
+                    productSession(choice, FileNameEnum.MEDIA_FILE_NAME.getFileName());
+
+                case 3:
+                    customerSession(choice, FileNameEnum.CUSTOMER_FILE_NAME.getFileName());
+
+                case 4:
+                    managerSession(choice, FileNameEnum.CLERKS_FILE_NAME.getFileName());
+
+                case 0:
+                    System.out.println("Saindo do programa.");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (choice != 0);
+    }
+
+    private void rentalTransactionSession(int choice, String transactionFileName) {
+
+        String arrayName = "rentalTransactions"; // Array que vai ser acessado nesse menu
+        String objType = "RentalTransaction"; // Tipo do objeto que vai ser acessado nesse menu
+
+        do {
+            System.out.println("Sessão de Locação");
+            System.out.println("1. Realizar Locação");
+            System.out.println("2. Listar Locações");
+            System.out.println("3. Listar Locações (Arquivo Físico)");
+            System.out.println("4. Persistir Dados (Salvar no Arquivo e Limpar Array)");
+            System.out.println("5. Excluir Locação (por Id)");
+            System.out.println("6. Limpar arquivo físico");
+            System.out.println("7. Voltar para menu");
+            System.out.println("Escolha uma opção: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+
                     fileEdit.makeRentalTransaction();
                     break;
 
@@ -57,28 +90,12 @@ public class Menu {
                     break;
 
                 case 7:
-                    productSession(choice, FileNameEnum.MEDIA_FILE_NAME.getFileName());
-
-                case 8:
-                    customerSession(choice, FileNameEnum.CUSTOMER_FILE_NAME.getFileName());
-
-                case 9:
-                    System.out.print("Senha (Senha para teste = 123):");
-                    if (scanner.nextInt() == 123) {
-                        managerSession(choice, FileNameEnum.CLERKS_FILE_NAME.getFileName());
-                    } else {
-                        System.out.println("Senha inválida.");
-                        main();
-                    }
-
-                case 0:
-                    System.out.println("Saindo do programa.");
-                    break;
+                    main();
 
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }
-        } while (choice != 0);
+        } while (choice != 7);
     }
 
     private void customerSession(int choice, String customerFileName) {
@@ -202,6 +219,7 @@ public class Menu {
 
                 case 4:
                     fileEdit.saveDataToFiles(clerksFileName, arrayType);
+                    break;
 
                 case 5:
                     fileEdit.deleteItem(objType);

@@ -18,6 +18,7 @@ import models.Movie;
 import models.RentalClerk;
 import models.RentalTransaction;
 import models.TVSeries;
+import models.enums.FileNameEnum;
 
 public class FileEdit {
 
@@ -25,6 +26,10 @@ public class FileEdit {
 
     public FileEdit(Scanner scanner) {
         this.scanner = scanner;
+        this.loadMediaItems();
+        this.loadCustomers();
+        this.loadRentalClerks();
+        this.loadRentalTransactions();
     }
 
     private ArrayList<MediaItem> mediaItems = new ArrayList<>();
@@ -38,16 +43,16 @@ public class FileEdit {
         int id = scanner.nextInt();
 
         System.out.print("Digite o ID do atendente: ");
-        RentalClerk clerk = findRentalClerk(rentalClerks, scanner.nextInt());
+        RentalClerk clerk = findRentalClerk(scanner.nextInt());
 
         System.out.print("Digite o ID do locador: ");
-        Customer customer = findCustomer(customers, scanner.nextInt());
+        Customer customer = findCustomer(scanner.nextInt());
 
         System.out.print("Digite o ID do produto: ");
-        MediaItem mediaItem = findMediaItem(mediaItems, scanner.nextInt());
+        MediaItem mediaItem = findMediaItem(scanner.nextInt());
 
         System.out.print("Digite a data de devolução (dd/mm/aaaa): ");
-        LocalDate returnDate = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate returnDate = LocalDate.parse(scanner.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
         long rentalDays = ChronoUnit.DAYS.between(LocalDate.now(), returnDate);
 
@@ -55,8 +60,8 @@ public class FileEdit {
         rentalTransactions.add(rentalTransaction);
     }
 
-    private RentalClerk findRentalClerk(ArrayList<RentalClerk> rentalClerks, int idRentalClerk) {
-        for (RentalClerk rentalClerk : rentalClerks) {
+    private RentalClerk findRentalClerk(int idRentalClerk) {
+        for (RentalClerk rentalClerk : this.rentalClerks) {
             if (rentalClerk.getId() == idRentalClerk) {
                 return rentalClerk;
             }
@@ -64,8 +69,8 @@ public class FileEdit {
         return null;
     }
 
-    private Customer findCustomer(ArrayList<Customer> customers, int idCustomer) {
-        for (Customer customer : customers) {
+    private Customer findCustomer(int idCustomer) {
+        for (Customer customer : this.customers) {
             if (customer.getId() == idCustomer) {
                 return customer;
             }
@@ -73,8 +78,8 @@ public class FileEdit {
         return null;
     }
 
-    private MediaItem findMediaItem(ArrayList<MediaItem> mediaItems, int idMediaItem) {
-        for (MediaItem mediaItem : mediaItems) {
+    private MediaItem findMediaItem(int idMediaItem) {
+        for (MediaItem mediaItem : this.mediaItems) {
             if (mediaItem.getId() == idMediaItem) {
                 return mediaItem;
             }
@@ -84,24 +89,25 @@ public class FileEdit {
 
     protected void addObjOnArray(String objType) {
         switch (objType) {
-            
+
             case "Customer":
                 System.out.println("Complete os campos a seguir para cadastrar o cliente.");
-                System.out.println("Digite o ID: ");
+                System.out.print("Digite o ID: ");
                 int idCustomer = scanner.nextInt();
 
-                System.out.println("Nome: ");
-                String nameCustomer = scanner.nextLine();
+                System.out.print("Nome: ");
+                String nameCustomer = scanner.next();
 
-                System.out.println("CPF: ");
-                String cpfCustomer = scanner.nextLine();
+                System.out.print("CPF: ");
+                String cpfCustomer = scanner.next();
 
-                System.out.println("Data de nacimento (dd/mm/aaaa): ");
-                LocalDate birthdayCustomer = LocalDate.parse(scanner.nextLine(),
+                System.out.print("Data de nacimento (dd/mm/aaaa): ");
+                LocalDate birthdayCustomer = LocalDate.parse(scanner.next(),
                         DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
                 Customer customer = new Customer(idCustomer, nameCustomer, cpfCustomer, birthdayCustomer);
                 customers.add(customer);
+                break;
 
             case "MediaItem":
                 System.out.println("\nEscolha o tipo de mídia:");
@@ -112,10 +118,10 @@ public class FileEdit {
 
                 System.out.print("Digite o ID: ");
                 int id = scanner.nextInt();
-                scanner.nextLine();
+                scanner.next();
 
                 System.out.print("Digite o título: ");
-                String title = scanner.nextLine();
+                String title = scanner.next();
 
                 System.out.print("Digite o preço diário. Caso seja série, valor da temporada: ");
                 double price = scanner.nextDouble();
@@ -140,24 +146,26 @@ public class FileEdit {
                 }
 
                 System.out.println("Item adicionado com sucesso!");
+                break;
 
             case "RentalClerk":
-                System.out.println("Complete os campos a seguir para cadastrar o cliente.");
-                System.out.println("Digite o ID: ");
+                System.out.println("Complete os campos a seguir para cadastrar um funcionário.");
+                System.out.print("Digite o ID: ");
                 int idClerk = scanner.nextInt();
 
-                System.out.println("Nome: ");
-                String nameClerk = scanner.nextLine();
+                System.out.print("Nome: ");
+                String nameClerk = scanner.next();
 
-                System.out.println("CPF: ");
-                String cpfClerk = scanner.nextLine();
+                System.out.print("CPF: ");
+                String cpfClerk = scanner.next();
 
-                System.out.println("Data de nacimento (dd/mm/aaaa): ");
-                LocalDate birthdayClerk = LocalDate.parse(scanner.nextLine(),
+                System.out.print("Data de nacimento (dd/mm/aaaa): ");
+                LocalDate birthdayClerk = LocalDate.parse(scanner.next(),
                         DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
                 RentalClerk clerk = new RentalClerk(idClerk, nameClerk, cpfClerk, birthdayClerk);
                 rentalClerks.add(clerk);
+                break;
         }
 
     }
@@ -168,18 +176,22 @@ public class FileEdit {
                 for (RentalTransaction rentalTransaction : rentalTransactions) {
                     System.out.println(rentalTransaction);
                 }
+                break;
             case "customers":
                 for (Customer customer : customers) {
                     System.out.println(customer);
                 }
+                break;
             case "mediaItems":
                 for (MediaItem mediaItem : mediaItems) {
                     System.out.println(mediaItem);
                 }
+                break;
             case "rentalClerks":
                 for (RentalClerk rentalClerk : rentalClerks) {
                     System.out.println(rentalClerk);
                 }
+                break;
         }
     }
 
@@ -199,90 +211,64 @@ public class FileEdit {
         }
     }
 
-    private PrintWriter createWriter(String fileName) throws IOException {
-        PrintWriter writer = new PrintWriter(new FileWriter(fileName));
-        return writer;
-    }
-
     private BufferedReader createReader(String fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(fileName));
         return reader;
     }
 
     protected void saveDataToFiles(String fileName, String arrayName) {
-        File file = new File(fileName);
-
-        if (!file.exists()) {
-            try (PrintWriter writer = createWriter(fileName);) {
-                for (MediaItem item : mediaItems) {
-                    writer.println(item);
-                }
-                clearArrayMediaItems(arrayName);
-                System.out.println("Dados salvos no arquivo de mídia.");
-            } catch (IOException e) {
-                System.out.println("Erro ao salvar os dados no arquivo de mídia.");
-            }
-        } else {
-            try (BufferedReader reader = createReader(fileName)) {
-                createCopy(reader, fileName, arrayName);
-                clearArrayMediaItems(arrayName);
-            } catch (IOException e) {
-                System.out.println("Erro ao ler o arquivo.");
-            }
-        }
-    }
-
-    private void createCopy(BufferedReader reader, String fileName, String arrayName) {
-        File fileCopy = new File("copy_" + fileName);
-        try (PrintWriter writerCopy = createWriter(fileCopy.getPath())) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                writerCopy.println(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar os dados no arquivo de mídia.");
-        } finally {
-            writeCopyOnFile(fileCopy, fileName, arrayName);
-        }
-    }
-
-    private void writeCopyOnFile(File fileCopy, String fileName, String arrayName) {
-
-        try (BufferedReader readerCopy = createReader(fileCopy.getPath());
-                PrintWriter writer = createWriter(fileName)) {
-            String line;
-            while ((line = readerCopy.readLine()) != null) {
-                writer.println(line);
-            }
-            for (MediaItem item : mediaItems) {
-                writer.println(item);
-            }
-            clearArrayMediaItems(arrayName);
-            System.out.println("Dados salvos no arquivo de mídia.");
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar os dados no arquivo de mídia.");
-        } finally {
-            fileCopy.delete();
-        }
-    }
-
-    private void clearArrayMediaItems(String arrayName) {
         switch (arrayName) {
             case "mediaItems":
+                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+                    for (MediaItem item : this.mediaItems) {
+                        writer.println(item);
+                    }
+                    System.out.println("Dados salvos no arquivo de mídia.");
+                } catch (IOException e) {
+                    System.out.println("Erro ao salvar os dados no arquivo de mídia.");
+                }
                 mediaItems.clear();
                 System.out.println("Array de itens de mídia limpo.");
+                break;
 
             case "rentalTransactions":
+                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+                    for (RentalTransaction rentalTransaction : this.rentalTransactions) {
+                        writer.println(rentalTransaction);
+                    }
+                    System.out.println("Dados salvos no arquivo de mídia.");
+                } catch (IOException e) {
+                    System.out.println("Erro ao salvar os dados no arquivo de mídia.");
+                }
                 rentalTransactions.clear();
-                System.out.println("Array de locações limpo.");
+                System.out.println("Array de itens de mídia limpo.");
+                break;
 
             case "rentalClerks":
+                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+                    for (RentalClerk rentalClerk : this.rentalClerks) {
+                        writer.println(rentalClerk);
+                    }
+                    System.out.println("Dados salvos no arquivo de mídia.");
+                } catch (IOException e) {
+                    System.out.println("Erro ao salvar os dados no arquivo de mídia.");
+                }
                 rentalClerks.clear();
-                System.out.println("Array de atendentes limpo.");
+                System.out.println("Array de itens de mídia limpo.");
+                break;
 
             case "customers":
+                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+                    for (Customer customer : this.customers) {
+                        writer.println(customer);
+                    }
+                    System.out.println("Dados salvos no arquivo de mídia.");
+                } catch (IOException e) {
+                    System.out.println("Erro ao salvar os dados no arquivo de mídia.");
+                }
                 customers.clear();
-                System.out.println("Array de clientes limpo.");
+                System.out.println("Array de itens de mídia limpo.");
+                break;
         }
     }
 
@@ -299,6 +285,7 @@ public class FileEdit {
                         found = true;
                     }
                 }
+                break;
             case "RentalTransaction":
                 for (RentalTransaction rentalTransaction : rentalTransactions) {
                     if (rentalTransaction.getId() == idToDelete) {
@@ -306,6 +293,7 @@ public class FileEdit {
                         found = true;
                     }
                 }
+                break;
             case "Customer":
                 for (Customer customer : customers) {
                     if (customer.getId() == idToDelete) {
@@ -313,6 +301,7 @@ public class FileEdit {
                         found = true;
                     }
                 }
+                break;
             case "RentalClerk":
                 for (RentalClerk rentalClerk : rentalClerks) {
                     if (rentalClerk.getId() == idToDelete) {
@@ -320,6 +309,7 @@ public class FileEdit {
                         found = true;
                     }
                 }
+                break;
         }
 
         if (found) {
@@ -335,6 +325,98 @@ public class FileEdit {
             System.out.println("Conteúdo do arquivo limpo com sucesso.");
         } catch (IOException e) {
             System.out.println("Erro ao limpar o arquivo.");
+        }
+    }
+
+    private void loadMediaItems() {
+        this.mediaItems.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(FileNameEnum.MEDIA_FILE_NAME.getFileName()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                int id = Integer.parseInt(parts[0].replace("ID: ", "").trim());
+                String title = parts[1].replace("Título: ", "").trim();
+                double price = Double
+                        .parseDouble(parts[2].replace("Preço(diário): R$ ", "").replaceAll("[^0-9.]", "").trim());
+                int duration = Integer.parseInt(parts[3].replace("Duração: ", "").replaceAll("[^0-9]", "").trim());
+                int releaseYear = Integer.parseInt(parts[4].replace("Ano de Lançamento: ", "").trim());
+
+                if (parts.length == 5) {
+                    MediaItem mediaItem = new MediaItem(id, title, price, duration, releaseYear);
+                    this.mediaItems.add(mediaItem);
+                } else if (parts.length == 7) {
+                    int seasons = Integer.parseInt(parts[5].replace("Temporadas: ", "").trim());
+                    int episodes = Integer.parseInt(parts[6].replace("Episódios: ", "").trim());
+                    MediaItem mediaItem = new TVSeries(id, title, price, duration, releaseYear, episodes, seasons);
+                    this.mediaItems.add(mediaItem);
+
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo.");
+        }
+    }
+
+    private void loadCustomers() {
+        this.customers.clear();
+        try (BufferedReader reader = new BufferedReader(
+                new FileReader(FileNameEnum.CUSTOMER_FILE_NAME.getFileName()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                int id = Integer.parseInt(parts[0].replace("ID: ", "").trim());
+                String name = parts[1].replace("Nome:", "").trim();
+                String cpf = parts[2].replace("CPF: ", "");
+                LocalDate data = LocalDate.parse(parts[3].replace("Ano de Nascimento: ", "").trim());
+
+                Customer customer = new Customer(id, name, cpf, data);
+                this.customers.add(customer);
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo.");
+        }
+    }
+
+    private void loadRentalTransactions() {
+        this.rentalTransactions.clear();
+        try (BufferedReader reader = new BufferedReader(
+                new FileReader(FileNameEnum.TRANSACTION_FILE_NAME.getFileName()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                int idTransaction = Integer.parseInt(parts[0].replace("ID Locação: ", "").trim());
+                int idCustomer = Integer.parseInt(parts[1].replace("ID Cliente: ", "").trim());
+                int idClerk = Integer.parseInt(parts[3].replace("ID Atendente: ", "").trim());
+                int idItem = Integer.parseInt(parts[5].replace("ID Item: ", "").trim());
+                long locationDays = Long.parseLong(parts[7].replace("Dias de locação: ", "").trim());
+
+                RentalTransaction rentalTransaction = new RentalTransaction(idTransaction,
+                        this.findRentalClerk(idClerk), this.findCustomer(idCustomer), this.findMediaItem(idItem),
+                        locationDays);
+                rentalTransactions.add(rentalTransaction);
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo.");
+        }
+
+    }
+
+    private void loadRentalClerks() {
+        this.rentalClerks.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(FileNameEnum.CLERKS_FILE_NAME.getFileName()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                int id = Integer.parseInt(parts[0].replace("ID: ", "").trim());
+                String name = parts[1].replace("Nome:", "").trim();
+                String cpf = parts[2].replace("CPF: ", "");
+                LocalDate data = LocalDate.parse(parts[3].replace("Ano de Nascimento: ", "").trim());
+
+                RentalClerk rentalClerk = new RentalClerk(id, name, cpf, data);
+                this.rentalClerks.add(rentalClerk);
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo.");
         }
     }
 }

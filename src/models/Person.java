@@ -29,4 +29,8 @@ public abstract class Person {
     public LocalDate getBirthday(){
         return birthday;
     }
+
+    public String toString(){
+        return "ID: " + getId() + " | Nome: " + getName() + " | CPF: " + " | Ano de Nascimento: " + getBirthday();
+    }
 }
