@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -26,10 +27,10 @@ public class FileEdit {
 
     public FileEdit(Scanner scanner) {
         this.scanner = scanner;
-        this.loadMediaItems();
-        this.loadCustomers();
-        this.loadRentalClerks();
-        this.loadRentalTransactions();
+        loadCustomers();
+        loadMediaItems();
+        loadRentalClerks();
+        loadRentalTransactions();
     }
 
     private ArrayList<MediaItem> mediaItems = new ArrayList<>();
@@ -39,25 +40,54 @@ public class FileEdit {
 
     protected void makeRentalTransaction() {
 
-        System.out.print("Digite o ID dessa transação de aluguel: ");
+        loadCustomers();
+        loadMediaItems();
+        loadRentalClerks();
+
+        System.out.print("\nDigite o ID dessa transação de aluguel: ");
         int id = scanner.nextInt();
 
         System.out.print("Digite o ID do atendente: ");
         RentalClerk clerk = findRentalClerk(scanner.nextInt());
+        if (clerk == null) {
+            System.out.println("Atendente não encontrado pelo ID!");
+            return;
+        }
 
         System.out.print("Digite o ID do locador: ");
         Customer customer = findCustomer(scanner.nextInt());
+        if (customer == null) {
+            System.out.println("Cliente não encontrado pelo ID!");
+            return;
+        }
 
         System.out.print("Digite o ID do produto: ");
         MediaItem mediaItem = findMediaItem(scanner.nextInt());
+        if (mediaItem == null) {
+            System.out.println("Item não encontrado pelo ID!");
+            return;
+        }
 
-        System.out.print("Digite a data de devolução (dd/mm/aaaa): ");
-        LocalDate returnDate = LocalDate.parse(scanner.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-        long rentalDays = ChronoUnit.DAYS.between(LocalDate.now(), returnDate);
+        long rentalDays = 0;
+        do {
+            System.out.print("Digite a data de devolução (dd/mm/aaaa): ");
+            try {
+                LocalDate returnDate = LocalDate.parse(scanner.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                rentalDays = ChronoUnit.DAYS.between(LocalDate.now(), returnDate);
+            } catch (DateTimeParseException e) {
+                System.out.println("Erro ao definir a data. Verifique se a data está no formato (dia/mês/ano).");
+            }
+            if (rentalDays <= 0) {
+                System.out.println("Não insira datas antes ou iguais à de hoje.");
+            }
+        } while (rentalDays <= 0);
 
         RentalTransaction rentalTransaction = new RentalTransaction(id, clerk, customer, mediaItem, rentalDays);
         rentalTransactions.add(rentalTransaction);
+
+        customers.clear();
+        mediaItems.clear();
+        rentalClerks.clear();
     }
 
     private RentalClerk findRentalClerk(int idRentalClerk) {
@@ -75,6 +105,7 @@ public class FileEdit {
                 return customer;
             }
         }
+
         return null;
     }
 
@@ -91,7 +122,7 @@ public class FileEdit {
         switch (objType) {
 
             case "Customer":
-                System.out.println("Complete os campos a seguir para cadastrar o cliente.");
+                System.out.println("\nComplete os campos a seguir para cadastrar o cliente.");
                 System.out.print("Digite o ID: ");
                 int idCustomer = scanner.nextInt();
 
@@ -101,9 +132,18 @@ public class FileEdit {
                 System.out.print("CPF: ");
                 String cpfCustomer = scanner.next();
 
-                System.out.print("Data de nacimento (dd/mm/aaaa): ");
-                LocalDate birthdayCustomer = LocalDate.parse(scanner.next(),
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                LocalDate birthdayCustomer = null;
+                do {
+                    System.out.print("Data de nacimento (dd/mm/aaaa): ");
+                    try {
+                        birthdayCustomer = LocalDate.parse(scanner.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Erro ao definir data. Lembre-se de inserir no formato (dia/mês/ano)");
+                    }
+                    if(0 < ChronoUnit.DAYS.between(LocalDate.now(), birthdayCustomer)){
+                        System.out.println("Insira um valor válido.");
+                    }
+                } while (birthdayCustomer != null || 0 < ChronoUnit.DAYS.between(LocalDate.now(), birthdayCustomer));
 
                 Customer customer = new Customer(idCustomer, nameCustomer, cpfCustomer, birthdayCustomer);
                 customers.add(customer);
@@ -149,7 +189,7 @@ public class FileEdit {
                 break;
 
             case "RentalClerk":
-                System.out.println("Complete os campos a seguir para cadastrar um funcionário.");
+                System.out.println("\nComplete os campos a seguir para cadastrar um funcionário.");
                 System.out.print("Digite o ID: ");
                 int idClerk = scanner.nextInt();
 
@@ -200,7 +240,7 @@ public class FileEdit {
         if (!file.exists()) {
             System.out.println("Arquivo não existe! Salve os dados no arquivo.");
         }
-        try (BufferedReader reader = createReader(fileName)) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             System.out.println("\nLista de Itens do Arquivo:");
             while ((line = reader.readLine()) != null) {
@@ -209,11 +249,6 @@ public class FileEdit {
         } catch (IOException e) {
             System.out.println("Erro ao ler o arquivo.");
         }
-    }
-
-    private BufferedReader createReader(String fileName) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        return reader;
     }
 
     protected void saveDataToFiles(String fileName, String arrayName) {
@@ -273,7 +308,7 @@ public class FileEdit {
     }
 
     protected void deleteItem(String objType) {
-        System.out.print("Digite o ID do objeto a ser excluído: ");
+        System.out.print("\nDigite o ID do objeto a ser excluído: ");
         int idToDelete = scanner.nextInt();
         boolean found = false;
 

@@ -52,7 +52,7 @@ public class Menu {
         String objType = "RentalTransaction"; // Tipo do objeto que vai ser acessado nesse menu
 
         do {
-            System.out.println("Sessão de Locação");
+            System.out.println("\nSessão de Locação");
             System.out.println("1. Realizar Locação");
             System.out.println("2. Listar Locações");
             System.out.println("3. Listar Locações (Arquivo Físico)");
@@ -60,7 +60,7 @@ public class Menu {
             System.out.println("5. Excluir Locação (por Id)");
             System.out.println("6. Limpar arquivo físico");
             System.out.println("7. Voltar para menu");
-            System.out.println("Escolha uma opção: ");
+            System.out.print("Escolha uma opção: ");
             choice = scanner.nextInt();
 
             switch (choice) {
