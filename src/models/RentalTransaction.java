@@ -44,6 +44,6 @@ public class RentalTransaction {
 
     @Override
     public String toString() {
-        return "ID Locação: " + this.id + " | ID Cliente: " + customer.getId() + " | Cliente: " + customer.getName() + " | ID Atendente: " + clerk.getId() + "| Atendente: " + clerk.getName() + " | ID Item: " + item.getId() + " | Item: " + item.getTitle() + " | Dias de locação: " + this.rentalDays + " | Total: R$ " + this.rentalCost;
+        return "ID Locacao: " + this.id + " | ID Cliente: " + customer.getId() + " | Cliente: " + customer.getName() + " | ID Atendente: " + clerk.getId() + "| Atendente: " + clerk.getName() + " | ID Item: " + item.getId() + " | Item: " + item.getTitle() + " | Dias de locacao: " + this.rentalDays + " | Total: R$ " + this.rentalCost;
     }
 }

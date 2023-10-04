@@ -9,6 +9,7 @@ public abstract class Person {
     private LocalDate birthday;
 
     public Person(int id, String name, String cpf, LocalDate birthday){
+        this.id = id;
         this.name = name;
         this.cpf = cpf;
         this.birthday = birthday;
@@ -31,6 +32,6 @@ public abstract class Person {
     }
 
     public String toString(){
-        return "ID: " + getId() + " | Nome: " + getName() + " | CPF: " + " | Ano de Nascimento: " + getBirthday();
+        return "ID: " + getId() + " | Nome: " + getName() + " | CPF: " + getCpf() + " | Ano de Nascimento: " + getBirthday();
     }
 }

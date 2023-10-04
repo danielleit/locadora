@@ -37,7 +37,7 @@ public class MediaItem implements Rentable {
     }
 
     public String toString() {
-        return "ID: " + id + " | Título: " + title + " | Preço(diário): R$" + price + " | Duração: " + duration + " mins | Ano de Lançamento: " + releaseYear;
+        return "ID: " + id + " | Titulo: " + title + " | Preco(diario): R$ " + price + " | Duracao: " + duration + " mins | Ano de Lancamento: " + releaseYear;
     }
 
     @Override

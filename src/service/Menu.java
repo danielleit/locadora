@@ -15,12 +15,12 @@ public class Menu {
 
         do {
             System.out.println("\nLocadora Menu:");
-            System.out.println("1. Realizar/Listar Locações");
+            System.out.println("1. Realizar/Listar Locacoes");
             System.out.println("2. Cadastrar/Listar Produtos");
             System.out.println("3. Cadastrar/Listar Clientes");
             System.out.println("4. Cadastrar/Listar Atendentes");
             System.out.println("0. Sair");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
             choice = scanner.nextInt();
 
             switch (choice) {
@@ -41,7 +41,7 @@ public class Menu {
                     break;
 
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opcao invalida. Tente novamente.");
             }
         } while (choice != 0);
     }
@@ -52,15 +52,15 @@ public class Menu {
         String objType = "RentalTransaction"; // Tipo do objeto que vai ser acessado nesse menu
 
         do {
-            System.out.println("\nSessão de Locação");
-            System.out.println("1. Realizar Locação");
-            System.out.println("2. Listar Locações");
-            System.out.println("3. Listar Locações (Arquivo Físico)");
+            System.out.println("\nSessao de Locacao");
+            System.out.println("1. Realizar Locacao");
+            System.out.println("2. Listar Locacoes");
+            System.out.println("3. Listar Locacoes (Arquivo Fisico)");
             System.out.println("4. Persistir Dados (Salvar no Arquivo e Limpar Array)");
-            System.out.println("5. Excluir Locação (por Id)");
-            System.out.println("6. Limpar arquivo físico");
+            System.out.println("5. Excluir Locacao (por Id)");
+            System.out.println("6. Limpar arquivo fisico");
             System.out.println("7. Voltar para menu");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
             choice = scanner.nextInt();
 
             switch (choice) {
@@ -93,7 +93,7 @@ public class Menu {
                     main();
 
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opcao invalida. Tente novamente.");
             }
         } while (choice != 7);
     }
@@ -104,15 +104,15 @@ public class Menu {
         String objType = "Customer"; // Tipo do objeto que vai ser acessado nesse menu
 
         do {
-            System.out.println("\nSessão Cliente:");
+            System.out.println("\nSessao Cliente:");
             System.out.println("1. Cadastrar Cliente");
             System.out.println("2. Listar Clientes");
-            System.out.println("3. Listar Clientes (Arquivo Físico)");
+            System.out.println("3. Listar Clientes (Arquivo Fisico)");
             System.out.println("4. Persistir Dados (Salvar no Arquivo e Limpar Array)");
             System.out.println("5. Excluir Cliente (por ID)");
-            System.out.println("6. Limpar Arquivo Físico");
+            System.out.println("6. Limpar Arquivo Fisico");
             System.out.println("7. Voltar para menu");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
             choice = scanner.nextInt();
 
             switch (choice) {
@@ -137,7 +137,7 @@ public class Menu {
                 case 7:
                     main();
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opcao invalida. Tente novamente.");
             }
         } while (choice != 7);
     }
@@ -148,15 +148,15 @@ public class Menu {
         String objType = "MediaItem"; // Tipo do objeto que vai ser acessado nesse menu
 
         do {
-            System.out.println("\nSessão Produto:");
+            System.out.println("\nSessao Produto:");
             System.out.println("1. Cadastrar Item");
             System.out.println("2. Listar Itens");
-            System.out.println("3. Listar Itens (Arquivo Físico)");
+            System.out.println("3. Listar Itens (Arquivo Fisico)");
             System.out.println("4. Persistir Dados (Salvar no Arquivo e Limpar Array)");
             System.out.println("5. Excluir Item (por ID)");
-            System.out.println("6. Limpar Arquivo Físico");
+            System.out.println("6. Limpar Arquivo Fisico");
             System.out.println("7. Voltar para menu");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
             choice = scanner.nextInt();
 
             switch (choice) {
@@ -181,7 +181,7 @@ public class Menu {
                 case 7:
                     main();
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opcao invalida. Tente novamente.");
             }
         } while (choice != 7);
     }
@@ -192,15 +192,15 @@ public class Menu {
         String objType = "RentalClerk"; // Tipo do objeto que vai ser acessado nesse menu
 
         do {
-            System.out.println("\nSessão Gerência:");
+            System.out.println("\nSessao Gerencia:");
             System.out.println("1. Cadastrar Atendente");
             System.out.println("2. Listar Atendentes");
-            System.out.println("3. Listar Atendentes (Arquivo Físico)");
+            System.out.println("3. Listar Atendentes (Arquivo Fisico)");
             System.out.println("4. Persistir Dados (Salvar no Arquivo e Limpar Array)");
             System.out.println("5. Excluir Atendente (por ID)");
-            System.out.println("6. Limpar Arquivo Físico");
+            System.out.println("6. Limpar Arquivo Fisico");
             System.out.println("7. Voltar para Menu");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
 
             choice = scanner.nextInt();
 
@@ -233,7 +233,7 @@ public class Menu {
                     main();
 
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opcao invalida. Tente novamente.");
             }
 
         } while (choice != 7);

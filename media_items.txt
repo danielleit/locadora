@@ -1,2 +1,0 @@
-ID: 1 | Título: 1 | Preço(diário): R$1.0 | Duração: 1 mins | Ano de Lançamento: 1
-ID: 1 | Título: 1 | Preço(diário): R$1.0 | Duração: 1 mins | Ano de Lançamento: 1

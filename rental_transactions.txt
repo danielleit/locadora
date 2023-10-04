@@ -1,1 +1,0 @@
-ID Locação: 1 | ID Cliente: 0 | Cliente: 1 | ID Atendente: 0| Atendente: 1 | ID Item: 1 | Item: 1 | Dias de locação: 39 | Total: R$ 39.0

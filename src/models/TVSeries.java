@@ -12,6 +12,6 @@ public class TVSeries extends MediaItem {
 
     @Override
     public String toString(){
-        return "ID: " + this.getId() + " | Título: " + this.getTitle() + " | Preço por Episódio (diário): R$" + this.getPrice() + " | Duração Total: " + this.getDuration() + " mins | Ano de Lançamento: " + this.getReleaseYear() + " | Temporadas: " + numberOfSeasons + " | Episódios: " + numberOfEpisodes;
+        return "ID: " + this.getId() + " | Titulo: " + this.getTitle() + " | Preco por Episodio (diario): R$" + this.getPrice() + " | Duracao Total: " + this.getDuration() + " mins | Ano de Lancamento: " + this.getReleaseYear() + " | Temporadas: " + numberOfSeasons + " | Episodios: " + numberOfEpisodes;
     }
 }
