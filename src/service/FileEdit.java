@@ -198,7 +198,6 @@ public class FileEdit {
 
                 System.out.print("Digite o ID: ");
                 int id = scanner.nextInt();
-                scanner.next();
 
                 System.out.print("Digite o Titulo: ");
                 String title = scanner.next();
