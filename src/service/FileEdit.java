@@ -264,23 +264,36 @@ public class FileEdit {
     }
 
     protected void listArray(String arrayName) {
+        System.out.println("\nListagem do Array: ");
         switch (arrayName) {
             case "rentalTransactions":
+                if (rentalTransactions.size() == 0) {
+                    System.out.println("Array vazio!");
+                }
                 for (RentalTransaction rentalTransaction : rentalTransactions) {
                     System.out.println(rentalTransaction);
                 }
                 break;
             case "customers":
+                if (customers.size() == 0) {
+                    System.out.println("Array vazio!");
+                }
                 for (Customer customer : customers) {
                     System.out.println(customer);
                 }
                 break;
             case "mediaItems":
+                if (mediaItems.size() == 0) {
+                    System.out.println("Array vazio!");
+                }
                 for (MediaItem mediaItem : mediaItems) {
                     System.out.println(mediaItem);
                 }
                 break;
             case "rentalClerks":
+                if (rentalClerks.size() == 0) {
+                    System.out.println("Array vazio!");
+                }
                 for (RentalClerk rentalClerk : rentalClerks) {
                     System.out.println(rentalClerk);
                 }
@@ -291,7 +304,7 @@ public class FileEdit {
     protected void listItemsFromFile(String fileName) {
         File file = new File(fileName);
         if (!file.exists()) {
-            System.out.println("Arquivo nao existe! Salve os dados no arquivo.");
+            System.out.println("\nArquivo nao existe! Salve os dados no arquivo.");
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -387,6 +400,7 @@ public class FileEdit {
                     if (mediaItem.getId() == idToDelete) {
                         mediaItems.remove(mediaItem);
                         found = true;
+                        break;
                     }
                 }
                 break;
@@ -395,6 +409,7 @@ public class FileEdit {
                     if (rentalTransaction.getId() == idToDelete) {
                         rentalTransactions.remove(rentalTransaction);
                         found = true;
+                        break;
                     }
                 }
                 break;
@@ -403,6 +418,7 @@ public class FileEdit {
                     if (customer.getId() == idToDelete) {
                         customers.remove(customer);
                         found = true;
+                        break;
                     }
                 }
                 break;
@@ -411,6 +427,7 @@ public class FileEdit {
                     if (rentalClerk.getId() == idToDelete) {
                         rentalClerks.remove(rentalClerk);
                         found = true;
+                        break;
                     }
                 }
                 break;
