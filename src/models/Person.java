@@ -31,7 +31,9 @@ public abstract class Person {
         return birthday;
     }
 
+    public abstract int getAge();
+
     public String toString(){
-        return "ID: " + getId() + " | Nome: " + getName() + " | CPF: " + getCpf() + " | Ano de Nascimento: " + getBirthday();
+        return "ID: " + getId() + " | Nome: " + getName() + " | CPF: " + getCpf() + " | Ano de Nascimento: " + getBirthday() + " | Idade: " + getAge() + " anos";
     }
 }
